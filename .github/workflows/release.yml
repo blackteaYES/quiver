@@ -1,0 +1,74 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+    inputs:
+      note:
+        description: 手动构建备注（仅产出 artifact，不创建 Release）
+        required: false
+        default: manual build
+
+permissions:
+  contents: write
+
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  windows:
+    name: Build & release (Windows x64)
+    runs-on: windows-latest
+    timeout-minutes: 45
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Typecheck
+        run: npm run typecheck
+
+      - name: Build renderer
+        run: npm run build
+
+      - name: Engine integration tests
+        run: npm run test:engine
+
+      - name: Package Windows installers
+        env:
+          CSC_IDENTITY_AUTO_DISCOVERY: 'false'
+        run: npx electron-builder --win --config.electronDist=node_modules/electron/dist
+
+      - name: Upload installers as workflow artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: quiver-windows-x64-${{ github.ref_name }}
+          path: |
+            release/Quiver-*.exe
+            release/*.blockmap
+          if-no-files-found: error
+
+      - name: Create GitHub Release
+        if: startsWith(github.ref, 'refs/tags/v')
+        shell: bash
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          VERSION="${GITHUB_REF_NAME#v}"
+          gh release create "$GITHUB_REF_NAME" \
+            "release/Quiver-${VERSION}-setup.exe" \
+            "release/Quiver-${VERSION}-portable.exe" \
+            --title "Quiver ${GITHUB_REF_NAME}" \
+            --verify-tag \
+            --notes "Quiver ${GITHUB_REF_NAME}：Windows 安装版（NSIS）与便携版。25 项 Harness 候选路径链、跨工具共享层管理、内容寻址只读中央库、局域网 Web 服务与可选系统托盘驻留。"
