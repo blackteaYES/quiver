@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024" role="img" aria-label="Quiver">
+  <defs>
+    <linearGradient id="bg" x1="120" y1="72" x2="904" y2="968" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#1D2635"/>
+      <stop offset="0.55" stop-color="#111823"/>
+      <stop offset="1" stop-color="#080C12"/>
+    </linearGradient>
+    <linearGradient id="ring" x1="294" y1="214" x2="700" y2="768" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#FFFFFF"/>
+      <stop offset="0.62" stop-color="#E7EDF5"/>
+      <stop offset="1" stop-color="#B8C5D7"/>
+    </linearGradient>
+    <linearGradient id="amber" x1="372" y1="596" x2="842" y2="832" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#FFC857"/>
+      <stop offset="1" stop-color="#F59E0B"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="0" cy="0" r="1" gradientTransform="translate(330 212) rotate(45) scale(580)" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#F59E0B" stop-opacity="0.17"/>
+      <stop offset="1" stop-color="#F59E0B" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <rect x="36" y="36" width="952" height="952" rx="232" fill="url(#bg)"/>
+  <rect x="36" y="36" width="952" height="952" rx="232" fill="url(#glow)"/>
+  <rect x="38.5" y="38.5" width="947" height="947" rx="229.5" fill="none" stroke="#FFFFFF" stroke-opacity="0.09" stroke-width="5"/>
+
+  <circle cx="470" cy="466" r="232" fill="none" stroke="url(#ring)" stroke-width="88"/>
+
+  <path d="M 607 650 C 682 722 736 768 790 810" fill="none" stroke="url(#amber)" stroke-width="64" stroke-linecap="round"/>
+
+  <g transform="translate(806 824) rotate(45)">
+    <rect x="-78" y="-48" width="156" height="96" rx="28" fill="url(#amber)"/>
+    <circle cx="-30" cy="0" r="14" fill="#0B1017"/>
+    <circle cx="30" cy="0" r="14" fill="#0B1017"/>
+  </g>
+
+  <path d="M 388 552 L 660 280" stroke="url(#amber)" stroke-width="50" stroke-linecap="round"/>
+  <path d="M 758 182 L 700 306 L 628 234 Z" fill="url(#amber)" stroke="url(#amber)" stroke-width="18" stroke-linejoin="round"/>
+</svg>

@@ -1,0 +1,57 @@
+appId: com.quiver.desktop
+productName: Quiver
+copyright: Copyright © 2026 Quiver Contributors
+
+directories:
+  buildResources: build
+  output: release
+
+files:
+  - dist/**/*
+  - electron/**/*
+  - package.json
+  - "!**/*.map"
+
+asar: true
+asarUnpack:
+  - "**/*.node"
+  - "node_modules/**/prebuilds/**"
+
+# The window icon is loaded from resources/icon.png in packaged builds.
+extraResources:
+  - from: build/icon.png
+    to: icon.png
+
+# node:sqlite ships with Electron's Node runtime; no native rebuild is required.
+npmRebuild: false
+
+win:
+  icon: build/icon.ico
+  executableName: Quiver
+  requestedExecutionLevel: asInvoker
+  target:
+    - target: nsis
+      arch:
+        - x64
+    - target: portable
+      arch:
+        - x64
+
+nsis:
+  artifactName: ${productName}-${version}-setup.${ext}
+  oneClick: false
+  perMachine: false
+  allowElevation: true
+  allowToChangeInstallationDirectory: true
+  createDesktopShortcut: true
+  createStartMenuShortcut: true
+  shortcutName: Quiver
+  installerIcon: build/icon.ico
+  uninstallerIcon: build/icon.ico
+  installerHeaderIcon: build/icon.ico
+  deleteAppDataOnUninstall: false
+  runAfterFinish: true
+
+portable:
+  artifactName: ${productName}-${version}-portable.${ext}
+  requestExecutionLevel: user

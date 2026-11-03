@@ -1,0 +1,263 @@
+@import "@fontsource-variable/ibm-plex-sans";
+@import "@fontsource-variable/jetbrains-mono";
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "IBM Plex Sans Variable", "IBM Plex Sans", "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono Variable", "SFMono-Regular", "Cascadia Code", Consolas, monospace;
+
+  --color-void: #16181d;
+  --color-sunken: #121419;
+  --color-panel: #1c1f26;
+  --color-raised: #222630;
+  --color-hover: #292e3a;
+  --color-soft: rgba(255, 255, 255, 0.045);
+  --color-soft-strong: rgba(255, 255, 255, 0.075);
+  --color-hairline: rgba(255, 255, 255, 0.14);
+  --color-hairline-strong: rgba(255, 255, 255, 0.25);
+  --color-overlay: rgba(4, 6, 10, 0.68);
+
+  --color-fg: #f8fafc;
+  --color-fg-muted: #cbd5e1;
+  --color-fg-subtle: #94a3b8;
+  --color-fg-faint: #94a3b8;
+
+  --color-primary: #f1f5f9;
+  --color-primary-fg: #0f172a;
+  --color-primary-hover: #ffffff;
+
+  --color-jade: #34d399;
+  --color-amber: #fbbf24;
+  --color-rose: #fb7185;
+  --color-sky: #7dd3fc;
+  --color-violet: #c4b5fd;
+
+  --shadow-inset-top: inset 0 1px 0 0 rgba(255, 255, 255, 0.07);
+  --shadow-raised: 0 1px 0 0 rgba(255, 255, 255, 0.07) inset, 0 16px 40px -24px rgba(0, 0, 0, 0.75);
+  --shadow-float: 0 1px 0 0 rgba(255, 255, 255, 0.08) inset, 0 20px 60px -16px rgba(0, 0, 0, 0.8);
+
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+:root {
+  color-scheme: dark;
+  --dot-color: rgba(255, 255, 255, 0.13);
+  --body-glow-a: rgba(255, 255, 255, 0.045);
+  --body-glow-b: rgba(255, 255, 255, 0.018);
+  --scrollbar-thumb: rgba(255, 255, 255, 0.16);
+  --scrollbar-thumb-hover: rgba(255, 255, 255, 0.28);
+  --selection-bg: rgba(255, 255, 255, 0.2);
+}
+
+:root[data-theme="light"] {
+  color-scheme: light;
+  --color-void: #f8fafc;
+  --color-sunken: #eef2f7;
+  --color-panel: #ffffff;
+  --color-raised: #ffffff;
+  --color-hover: #eef2f7;
+  --color-soft: rgba(15, 23, 42, 0.04);
+  --color-soft-strong: rgba(15, 23, 42, 0.075);
+  --color-hairline: rgba(15, 23, 42, 0.14);
+  --color-hairline-strong: rgba(15, 23, 42, 0.25);
+  --color-overlay: rgba(15, 23, 42, 0.38);
+
+  --color-fg: #0f172a;
+  --color-fg-muted: #334155;
+  --color-fg-subtle: #475569;
+  --color-fg-faint: #64748b;
+
+  --color-primary: #0f172a;
+  --color-primary-fg: #ffffff;
+  --color-primary-hover: #1e293b;
+
+  --color-jade: #047857;
+  --color-amber: #b45309;
+  --color-rose: #be123c;
+  --color-sky: #0369a1;
+  --color-violet: #6d28d9;
+
+  --shadow-inset-top: inset 0 1px 0 0 rgba(255, 255, 255, 0.85);
+  --shadow-raised: 0 1px 0 0 rgba(255, 255, 255, 0.9) inset, 0 16px 40px -24px rgba(15, 23, 42, 0.22);
+  --shadow-float: 0 1px 0 0 rgba(255, 255, 255, 0.95) inset, 0 22px 60px -18px rgba(15, 23, 42, 0.28);
+
+  --dot-color: rgba(15, 23, 42, 0.16);
+  --body-glow-a: rgba(37, 99, 235, 0.06);
+  --body-glow-b: rgba(15, 23, 42, 0.025);
+  --scrollbar-thumb: rgba(15, 23, 42, 0.2);
+  --scrollbar-thumb-hover: rgba(15, 23, 42, 0.32);
+  --selection-bg: rgba(37, 99, 235, 0.2);
+}
+
+@layer base {
+  * {
+    border-color: var(--color-hairline);
+  }
+
+  html,
+  body,
+  #root {
+    height: 100%;
+    overflow: hidden;
+  }
+
+  #root {
+    height: 100dvh;
+  }
+
+  html {
+    font-size: 16px;
+  }
+
+  body {
+    @apply bg-void font-sans text-fg antialiased;
+    background-image:
+      radial-gradient(1100px 560px at 14% -12%, var(--body-glow-a), transparent 58%),
+      radial-gradient(900px 600px at 100% 0%, var(--body-glow-b), transparent 55%);
+    background-color: var(--color-void);
+    font-synthesis-weight: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -webkit-tap-highlight-color: transparent;
+    overscroll-behavior: none;
+  }
+
+  button,
+  [role="button"] {
+    touch-action: manipulation;
+  }
+
+  ::selection {
+    background: var(--selection-bg);
+    color: var(--color-fg);
+  }
+
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: var(--scrollbar-thumb);
+    border-radius: 999px;
+    border: 2px solid transparent;
+    background-clip: padding-box;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--scrollbar-thumb-hover);
+    border: 2px solid transparent;
+    background-clip: padding-box;
+  }
+
+  button {
+    cursor: pointer;
+  }
+
+  button:disabled {
+    cursor: default;
+  }
+
+  :focus-visible {
+    outline: 1px solid var(--color-hairline-strong);
+    outline-offset: 2px;
+  }
+}
+
+@layer components {
+  .mono-pill {
+    @apply inline-flex items-center gap-1.5 rounded-[6px] border border-hairline bg-soft px-2.5 py-1 font-mono text-[13px] leading-none text-fg-muted;
+    box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.03);
+  }
+
+  .kbd {
+    @apply inline-flex min-w-[22px] items-center justify-center rounded-[5px] border border-hairline bg-soft px-1.5 py-[3px] font-mono text-[12.5px] leading-none text-fg-subtle;
+    box-shadow: inset 0 -1px 0 0 rgba(0, 0, 0, 0.28), inset 0 1px 0 0 rgba(255, 255, 255, 0.04);
+  }
+
+  .dot-grid {
+    background-image: radial-gradient(var(--dot-color) 0.8px, transparent 0.8px);
+    background-size: 19px 19px;
+    background-position: -1px -1px;
+  }
+
+  .hairline-t {
+    border-top: 1px solid var(--color-hairline);
+  }
+
+  .window-drag {
+    -webkit-app-region: drag;
+  }
+
+  .window-no-drag {
+    -webkit-app-region: no-drag;
+  }
+
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .glow-dot {
+    box-shadow: 0 0 0 1px var(--color-hairline), 0 0 10px -1px currentColor;
+  }
+
+  .scrollbar-none {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  .scrollbar-none::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+@keyframes cable-flow {
+  to {
+    stroke-dashoffset: -28;
+  }
+}
+
+@keyframes soft-pulse {
+  0%,
+  100% {
+    opacity: 0.55;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.22);
+  }
+}
+
+@keyframes spin-slow {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-cable-flow {
+  animation: cable-flow 1.5s linear infinite;
+}
+
+.animate-soft-pulse {
+  animation: soft-pulse 2.8s ease-in-out infinite;
+}
+
+.animate-spin-slow {
+  animation: spin-slow 0.9s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
