@@ -9,11 +9,14 @@
     <img src="https://img.shields.io/badge/React-19-087ea4?logo=react" alt="React 19" />
     <img src="https://img.shields.io/badge/TypeScript-7-3178c6?logo=typescript" alt="TypeScript 7" />
     <img src="https://img.shields.io/badge/platform-Windows%2010%2F11%20x64-4b5563" alt="Platform: Windows 10/11 x64" />
+    <img src="https://img.shields.io/badge/vibe%20coded%20with-Qoder%20%2B%20DeepSeek-6b7280" alt="Vibe coded with Qoder + DeepSeek" />
   </p>
   <p>
     <a href="docs/QUICKSTART.md"><strong>快速上手</strong></a> ·
     <a href="https://github.com/blackteaYES/quiver/releases">下载</a> ·
-    <a href="assets/SPEC.md">设计规格</a>
+    <a href="assets/SPEC.md">设计规格</a> ·
+    <a href="https://blackteayes.github.io/">作者博客</a> ·
+    <a href="https://blackteayes.github.io/about.html">关于我</a>
   </p>
 </div>
 
@@ -442,6 +445,14 @@ npm run test:engine
 3. **修复动作显式化。** 漂移、缺失、外部技能只标记，由用户决定下一步。
 4. **最小侵入。** 不碰 Harness 配置，不在项目中偷偷创建文件，不做自动双向同步。
 5. **单机优先。** 默认仅本机可访问；局域网能力必须显式开启，且始终受 Token 保护。
+
+## 开发方式与致谢
+
+Quiver 是 blackteaYES 的 vibe coding 产物，由作者发起并维护。产品定位、交互逻辑、架构取舍、原型、规格文档与最终验收由作者完成；代码、测试与文档在 Qoder 客户端中借助 DeepSeek 模型协作实现。
+
+感谢 Qoder 与 DeepSeek 提供的编码协作能力。
+
+作者博客：[blackteayes.github.io](https://blackteayes.github.io/) · [关于我](https://blackteayes.github.io/about.html)
 
 ## 许可证
 
