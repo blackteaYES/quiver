@@ -50,12 +50,20 @@ jobs:
           CSC_IDENTITY_AUTO_DISCOVERY: 'false'
         run: npx electron-builder --win --publish never --config.electronDist=node_modules/electron/dist
 
+      - name: Generate SHA-256 checksums
+        shell: bash
+        run: |
+          cd release
+          sha256sum Quiver-*.exe > SHA256SUMS.txt
+          cat SHA256SUMS.txt
+
       - name: Upload installers as workflow artifact
         uses: actions/upload-artifact@v4
         with:
           name: quiver-windows-x64-${{ github.ref_name }}
           path: |
             release/Quiver-*.exe
+            release/SHA256SUMS.txt
             release/*.blockmap
           if-no-files-found: error
 
@@ -67,8 +75,9 @@ jobs:
         run: |
           VERSION="${GITHUB_REF_NAME#v}"
           gh release create "$GITHUB_REF_NAME" \
-            "release/Quiver-${VERSION}-setup.exe" \
-            "release/Quiver-${VERSION}-portable.exe" \
+            "release/Quiver-${VERSION}-win-x64-setup.exe" \
+            "release/Quiver-${VERSION}-win-x64-portable.exe" \
+            "release/SHA256SUMS.txt" \
             --title "Quiver ${GITHUB_REF_NAME}" \
             --verify-tag \
-            --notes "Quiver ${GITHUB_REF_NAME}：Windows 安装版（NSIS）与便携版。25 项 Harness 候选路径链、跨工具共享层管理、内容寻址只读中央库、局域网 Web 服务与可选系统托盘驻留。"
+            --notes "Quiver ${GITHUB_REF_NAME}：Windows x64 安装版（NSIS）与便携版。25 项 Harness 候选路径链、跨工具共享层管理、内容寻址只读中央库、局域网 Web 服务与可选系统托盘驻留。未配置代码签名；下载后请核对 SHA256SUMS.txt，SmartScreen 与智能应用控制的处理方式见 README「未签名构建的使用方式」。"

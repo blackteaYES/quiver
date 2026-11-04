@@ -8,11 +8,57 @@
     <img src="https://img.shields.io/badge/Electron-41-2b2e3a?logo=electron" alt="Electron 41" />
     <img src="https://img.shields.io/badge/React-19-087ea4?logo=react" alt="React 19" />
     <img src="https://img.shields.io/badge/TypeScript-7-3178c6?logo=typescript" alt="TypeScript 7" />
-    <img src="https://img.shields.io/badge/platform-Windows%20%7C%20macOS%20%7C%20Linux-4b5563" alt="Platform" />
+    <img src="https://img.shields.io/badge/platform-Windows%2010%2F11%20x64-4b5563" alt="Platform: Windows 10/11 x64" />
+  </p>
+  <p>
+    <a href="docs/QUICKSTART.md"><strong>快速上手</strong></a> ·
+    <a href="https://github.com/blackteaYES/quiver/releases">下载</a> ·
+    <a href="assets/SPEC.md">设计规格</a>
   </p>
 </div>
 
 ---
+
+## 界面预览
+
+![Quiver 四步总览：导入技能、启用到工具、一处对账、多端访问](docs/images/00-quickstart.png)
+
+先看四步总览：导入技能 → 启用到工具 → 一处对账 → 多端访问。完整操作见 **[快速上手](docs/QUICKSTART.md#四步总览)**。
+
+![Quiver 技能库与生效拓扑](docs/images/01-skills.png)
+
+技能库、Harness 与项目共享同一份绑定数据：中央库只读，入口可追踪、可回滚。安装、导入、启用、漂移处理与手机访问的完整流程见 **[快速上手](docs/QUICKSTART.md)**。
+
+<details>
+<summary>查看更多界面截图</summary>
+
+### 启用到多个工具
+
+![启用到多个工具](docs/images/02-enable.png)
+
+### Harness 候选路径链
+
+![Harness 候选路径链](docs/images/03-harness.png)
+
+### 项目视角
+
+![项目视角](docs/images/04-projects.png)
+
+### 设置与 Harness 路径字典
+
+![设置](docs/images/05-settings.png)
+
+![候选路径链编辑](docs/images/06-harness-paths.png)
+
+### 手机浏览器访问
+
+![手机 Web 端](docs/images/08-web-mobile.png)
+
+### 操作日志
+
+![操作日志](docs/images/07-audit.png)
+
+</details>
 
 ## 为什么需要 Quiver
 
@@ -227,11 +273,17 @@ Quiver（箭袋）只做一件事：**把「技能内容」与「部署关系」
 
 ## 快速开始
 
+### 直接使用（推荐）
+
+不想从源码构建时，从 [Releases](https://github.com/blackteaYES/quiver/releases) 下载 `Quiver-0.1.0-win-x64-setup.exe`（安装版）或 `Quiver-0.1.0-win-x64-portable.exe`（便携版）。首次运行、SmartScreen 提示与数据位置见 [快速上手](docs/QUICKSTART.md#1-下载与启动)。
+
+以下为从源码开发、运行与打包流程。
+
 ### 环境要求
 
 - Node.js **20.19+** 或 **22.12+**（Vite 8 工具链要求）。
 - 无需本地编译 SQLite：应用使用 Electron 41 内置 Node 24 的 `node:sqlite`。
-- Windows 打包需要 Windows 10/11 x64。
+- 当前仅发布 Windows 10/11 x64 构建；macOS / Linux 尚无打包目标。
 
 ### 开发运行
 
@@ -265,13 +317,56 @@ npm run dist:win
 
 | 文件 | 说明 |
 | :--- | :--- |
-| `Quiver-0.1.0-setup.exe` | NSIS 安装版，可选安装目录、桌面与开始菜单快捷方式 |
-| `Quiver-0.1.0-portable.exe` | 免安装便携版，单文件启动 |
+| `Quiver-0.1.0-win-x64-setup.exe` | NSIS 安装版，可选安装目录、桌面与开始菜单快捷方式 |
+| `Quiver-0.1.0-win-x64-portable.exe` | 免安装便携版，单文件启动 |
 | `win-unpacked/` | 未压缩的独立运行目录，便于调试 |
 
 打包配置位于 `electron-builder.yml`：`asar` 打包前端与引擎，`node:sqlite` 由 Electron 运行时内置，`asarUnpack` 覆盖潜在的原生 `.node` 模块；窗口图标从 `resources/icon.png` 读取，安装包与可执行文件使用 `build/icon.ico`。
 
-> 当前 Windows 构建未配置代码签名证书。首次运行 `setup.exe` 或 `portable.exe` 时，SmartScreen 可能显示「未知发布者」提示；这是未签名应用的预期行为。
+### 未签名构建的使用方式
+
+Quiver 的 Windows 构建没有配置代码签名证书，因此发布者显示为「未知发布者」。这不代表文件被篡改；可以按下面的方式继续安装或运行。
+
+**方式一：用命令行下载（不写入 Internet 标记）**
+
+浏览器下载会给文件写入「来自 Internet」标记（Mark of the Web），SmartScreen 因此拦截。使用 `curl.exe` 下载不会写入该标记：
+
+```powershell
+$version = "0.1.0"
+$base = "https://github.com/blackteaYES/quiver/releases/download/v$version"
+curl.exe -L --fail --retry 3 -O "$base/Quiver-$version-win-x64-setup.exe"
+curl.exe -L --fail --retry 3 -O "$base/Quiver-$version-win-x64-portable.exe"
+curl.exe -L --fail --retry 3 -O "$base/SHA256SUMS.txt"
+```
+
+**方式二：浏览器下载后解除锁定**
+
+1. 右键下载的 `.exe` →「属性」→ 勾选「解除锁定」→「确定」；也可以在 PowerShell 中执行 `Unblock-File .\Quiver-0.1.0-win-x64-portable.exe`。
+2. 双击运行时若仍出现「Windows 已保护你的电脑」，点「更多信息」→「仍要运行」。
+3. 若被安全软件误报，先核对 SHA-256，再把文件加入信任列表；不建议关闭实时防护。
+
+**关于 Windows 智能应用控制（Smart App Control）**
+
+智能应用控制与 SmartScreen 是两套机制。「解除锁定」只能去掉 Internet 标记，**不能绕过智能应用控制**。如果「Windows 安全中心 → 应用和浏览器控制 → 智能应用控制」处于「开启」状态，未签名程序通常无法运行，也没有「仍要运行」入口。这种情况下，不修改系统设置就没有可行的绕过方式，只能：
+
+- 在系统中关闭智能应用控制。注意：Windows 11 关闭后，重新开启通常需要重置或重装系统；
+- 或换一台未开启该功能的 Windows 10 / 11 电脑运行；
+- 或从源码自行构建（`npm run dist:win`）。自行构建的产物同样没有签名，开启智能应用控制时仍可能被拦截。
+
+**校验发布资产**
+
+每个 Release 都会附带 `SHA256SUMS.txt`。把它与下载的 exe 放在同一目录后，在 Git Bash 中执行：
+
+```bash
+sha256sum -c SHA256SUMS.txt
+```
+
+也可以在 PowerShell 中逐个查看哈希并手动比对：
+
+```powershell
+Get-FileHash .\Quiver-0.1.0-win-x64-setup.exe -Algorithm SHA256
+Get-FileHash .\Quiver-0.1.0-win-x64-portable.exe -Algorithm SHA256
+```
 
 ## 运行数据
 
@@ -300,6 +395,7 @@ Quiver/
 │       ├── server.cjs        # Token 鉴权、RPC、SSE、静态托管
 │       └── ...               # hash / config（Web / 托盘设置）/ seed / actions / util
 ├── src/                      # React 渲染层、语义令牌、响应式三档布局
+├── docs/                     # 快速上手与界面截图
 ├── scripts/                  # 启动器、引擎测试运行器、图标生成
 ├── tests/engine-full.test.mjs
 ├── assets/SPEC.md            # 完整设计规格

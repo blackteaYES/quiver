@@ -237,11 +237,11 @@ npm run dist:win  # npm run build + electron-builder --win
 ```
 
 - 配置在 [`electron-builder.yml`](electron-builder.yml)：`appId: com.quiver.desktop`、`productName: Quiver`、`buildResources: build`、`output: release`、x64。
-- 产物：`release/Quiver-0.1.0-setup.exe`（NSIS 安装版，非一键、可选目录、桌面/开始菜单快捷方式、安装后可选启动）、`release/Quiver-0.1.0-portable.exe`（免安装便携版）、`release/win-unpacked/`（免安装解包目录）。
+- 产物：`release/Quiver-0.1.0-win-x64-setup.exe`（NSIS 安装版，非一键、可选目录、桌面/开始菜单快捷方式、安装后可选启动）、`release/Quiver-0.1.0-win-x64-portable.exe`（免安装便携版）、`release/win-unpacked/`（免安装解包目录）。当前仅配置 Windows 10/11 x64 目标，不产出 macOS / Linux 包；文件名统一带 `win-x64`。
 - `files` 只收 `dist/**`、`electron/**`、`package.json`（排除 sourcemap）；electron-builder 会自动纳入生产 `node_modules`，devDependencies 不进入包内。
 - `asar: true`。应用没有需要本地编译的原生模块：`node:sqlite` 由 Electron 41 内置 Node 24 提供，因此 `npmRebuild: false`；`asarUnpack` 预留了 `**/*.node` 与 `node_modules/**/prebuilds/**`，将来若引入原生模块无需改配置。
 - `extraResources` 把 `build/icon.png` 复制到 `resources/icon.png`；`main.cjs` 的 `windowIcon()` 在打包后读 `process.resourcesPath/icon.png`，开发时读 `build/icon.png`。Windows 同时调用 `app.setAppUserModelId('com.quiver.desktop')`。
-- 未配置代码签名证书，构建会跳过签名；首次运行会触发 Windows SmartScreen 提示。正式分发需提供证书（`CSC_LINK` / `CSC_KEY_PASSWORD`）或接入 Trusted Signing。
+- 未配置代码签名证书，构建会跳过签名，正式分发即未签名构建；tag 触发的 Release workflow 会生成并附带 `SHA256SUMS.txt`，放行方式、智能应用控制的限制与 v0.1.0 校验值见 README「未签名构建的使用方式」。
 
 ### 打包后的路径
 
@@ -349,7 +349,7 @@ npm run test:engine
 13. 390px / 360px 宽度下无横向滚动：左栏隐藏、底部 Tab 常驻、列表 → 详情 → 返回完整可用；900px 宽度显示 64px 图标栏。触控目标 ≥40px，路径快捷动作无需悬浮即可见。
 14. 设置中开启局域网后监听 `0.0.0.0` 并列出网卡 IPv4；开关切换即时生效，列表与第一个地址的二维码无需关闭设置即可出现；无 Token 的局域网请求 401，错误 Host / Origin 403；关闭后仅 `127.0.0.1` 可访问。Web 端不能修改 Web 配置与运行模式。展开任一地址的二维码后扫码可自动解锁，地址栏 fragment 随即被清除；重新生成 Token 后旧二维码失效。二维码可下载为 PNG（与内联 SVG 编码一致）并在放大预览中查看，`Esc` 只关闭预览层。
 15. 控制台无运行时错误。
-16. `npm run dist:win` 生成 `Quiver-0.1.0-setup.exe` 与 `Quiver-0.1.0-portable.exe`；安装版可自选目录、生成快捷方式、卸载保留用户数据；便携版可直接运行。
+16. `npm run dist:win` 生成 `Quiver-0.1.0-win-x64-setup.exe` 与 `Quiver-0.1.0-win-x64-portable.exe`；安装版可自选目录、生成快捷方式、卸载保留用户数据；便携版可直接运行。
 17. 打包产物用临时 `--user-data-dir` 启动：窗口显示图标与页面，内嵌 Web 服务可从 `app.asar/dist` 托管 HTML/JS/CSS，Token 鉴权、快照脱敏与 `DESKTOP_ONLY` 行为与开发模式一致。
 18. Harness 候选路径链：25 项内置字典可按「本机活跃 / 全部 / 国内主流 / 国际主力 / 自定义」筛选，计数分别为 8 / 25 / 11 / 13 / 0；「本机活跃」只列活跃工具，未检出工具通过「展开其余 N 个」切到「全部」；分类为 0 或搜索无结果时显示空状态与「查看全部」；标签条左右箭头与滚轮可横向滚动，选中靠右标签自动滚入视野；`~/.agents/skills` 共享层不把全部工具误判为活跃；同一 slug 多目录时高优先级生效、低优先级标记被覆盖。
 19. 自定义工具：新增后自动生成英文 ID 与共享候选，可编辑路径链、调整优先级、设为首选、恢复默认与删除；有活跃绑定或候选被引用时删除会被拒绝并说明原因；修改首选路径后绑定重挂到新路径。

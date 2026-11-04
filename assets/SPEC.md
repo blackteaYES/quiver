@@ -607,8 +607,8 @@ npm run dist:win    # npm run build + electron-builder --win（NSIS + Portable�
 - `files` 仅包含 `dist/**`、`electron/**`、`package.json`，排除 sourcemap；electron-builder 自动纳入生产 `node_modules`。
 - `asar: true`；`asarUnpack` 预留 `**/*.node` 与 `node_modules/**/prebuilds/**`。当前没有原生模块：`node:sqlite` 由 Electron 41 内置 Node 24 提供，故 `npmRebuild: false`。
 - `extraResources` 将 `build/icon.png` 复制为 `resources/icon.png`；主进程打包后从 `process.resourcesPath/icon.png` 读取窗口图标，开发时读取 `build/icon.png`。Windows 额外设置 `app.setAppUserModelId('com.quiver.desktop')`。
-- Windows 目标：`nsis`（`oneClick: false`、可选安装目录、可提升权限、桌面/开始菜单快捷方式、`deleteAppDataOnUninstall: false`）与 `portable`（`requestExecutionLevel: user`），均为 x64。
-- 产物：`release/Quiver-<version>-setup.exe`、`release/Quiver-<version>-portable.exe`、`release/win-unpacked/`。未配置证书时跳过签名，首次运行会有 SmartScreen 提示。
+- Windows 目标：`nsis`（`oneClick: false`、可选安装目录、可提升权限、桌面/开始菜单快捷方式、`deleteAppDataOnUninstall: false`）与 `portable`（`requestExecutionLevel: user`），均为 x64。当前仅配置 Windows x64，不产出 macOS / Linux 包。
+- 产物：`release/Quiver-<version>-win-x64-setup.exe`、`release/Quiver-<version>-win-x64-portable.exe`、`release/win-unpacked/`。未配置证书时跳过签名，首次运行会有 SmartScreen 提示；GitHub Release 附带 `SHA256SUMS.txt`，放行方式与智能应用控制的限制见 README「未签名构建的使用方式」。
 
 ### 13.3 打包后的运行路径
 

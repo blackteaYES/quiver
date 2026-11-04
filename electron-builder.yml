@@ -38,7 +38,7 @@ win:
         - x64
 
 nsis:
-  artifactName: ${productName}-${version}-setup.${ext}
+  artifactName: ${productName}-${version}-win-${arch}-setup.${ext}
   oneClick: false
   perMachine: false
   allowElevation: true
@@ -53,5 +53,5 @@ nsis:
   runAfterFinish: true
 
 portable:
-  artifactName: ${productName}-${version}-portable.${ext}
+  artifactName: ${productName}-${version}-win-${arch}-portable.${ext}
   requestExecutionLevel: user
