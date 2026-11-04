@@ -1,0 +1,220 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1300" viewBox="0 0 1200 1300" role="img" aria-label="Quiver 架构总览：渲染层、桥接层、引擎层与落盘层">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0b0d12"/>
+      <stop offset="0.55" stop-color="#0d1016"/>
+      <stop offset="1" stop-color="#0a0c10"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="0.78" cy="0.06" r="0.78">
+      <stop offset="0" stop-color="#34d399" stop-opacity="0.10"/>
+      <stop offset="0.42" stop-color="#38bdf8" stop-opacity="0.035"/>
+      <stop offset="1" stop-color="#0b0d12" stop-opacity="0"/>
+    </radialGradient>
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M40 0H0V40" fill="none" stroke="rgba(148,163,184,0.055)" stroke-width="1"/>
+    </pattern>
+    <filter id="engineGlow" x="-25%" y="-35%" width="150%" height="170%">
+      <feDropShadow dx="0" dy="0" stdDeviation="18" flood-color="#34d399" flood-opacity="0.20"/>
+    </filter>
+    <marker id="arrowJade" markerWidth="9" markerHeight="9" refX="7.5" refY="4.5" orient="auto" markerUnits="userSpaceOnUse">
+      <path d="M0,0 L9,4.5 L0,9 z" fill="#34d399"/>
+    </marker>
+    <marker id="arrowSky" markerWidth="9" markerHeight="9" refX="7.5" refY="4.5" orient="auto" markerUnits="userSpaceOnUse">
+      <path d="M0,0 L9,4.5 L0,9 z" fill="#38bdf8"/>
+    </marker>
+    <marker id="arrowSlate" markerWidth="9" markerHeight="9" refX="7.5" refY="4.5" orient="auto" markerUnits="userSpaceOnUse">
+      <path d="M0,0 L9,4.5 L0,9 z" fill="#64748b"/>
+    </marker>
+    <style>
+      text { font-family: 'Segoe UI','Microsoft YaHei UI','PingFang SC',sans-serif; }
+      .mono { font-family: 'Cascadia Mono','Consolas','SFMono-Regular',monospace; }
+      .kicker { font-size: 13.5px; letter-spacing: 3.2px; fill: #34d399; }
+      .h1 { font-size: 42px; font-weight: 700; fill: #f8fafc; letter-spacing: -0.6px; }
+      .sub { font-size: 18.5px; fill: #94a3b8; }
+      .layer-num { font-family: 'Cascadia Mono','Consolas',monospace; font-size: 14px; font-weight: 600; fill: #34d399; letter-spacing: 1px; }
+      .layer-title { font-size: 18px; font-weight: 600; fill: #e2e8f0; }
+      .layer-en { font-family: 'Cascadia Mono','Consolas',monospace; font-size: 11.5px; fill: #64748b; letter-spacing: 2.6px; }
+      .card-title { font-size: 21.5px; font-weight: 600; fill: #f8fafc; }
+      .card-sub { font-size: 15px; fill: #94a3b8; }
+      .body { font-size: 15px; fill: #cbd5e1; }
+      .small { font-size: 13px; fill: #64748b; }
+      .tiny { font-size: 12.5px; fill: #64748b; }
+      .mono-sm { font-family: 'Cascadia Mono','Consolas',monospace; font-size: 13.5px; fill: #cbd5e1; }
+      .mono-md { font-family: 'Cascadia Mono','Consolas',monospace; font-size: 15px; fill: #cbd5e1; }
+      .mono-jade { font-family: 'Cascadia Mono','Consolas',monospace; font-size: 15px; fill: #34d399; }
+      .chip-text { font-size: 14.5px; fill: #cbd5e1; }
+      .conn { font-family: 'Cascadia Mono','Consolas',monospace; font-size: 14.5px; }
+    </style>
+  </defs>
+
+  <rect width="1200" height="1300" fill="url(#bg)"/>
+  <rect width="1200" height="1300" fill="url(#grid)" opacity="0.5"/>
+  <rect width="1200" height="1300" fill="url(#glow)"/>
+
+  <text x="96" y="64" class="kicker mono">QUIVER / ARCHITECTURE</text>
+  <text x="96" y="122" class="h1">Quiver 架构总览</text>
+  <text x="96" y="158" class="sub">本地优先的技能中枢：渲染层只读快照，引擎统一裁决，中央库内容寻址</text>
+
+  <rect x="1000" y="76" width="104" height="38" rx="19" fill="#12151b" stroke="rgba(255,255,255,0.12)"/>
+  <circle cx="1022" cy="95" r="3.5" fill="#34d399"/>
+  <text x="1036" y="100" class="mono" font-size="14" fill="#cbd5e1">v0.1.0</text>
+  <line x1="868" y1="142" x2="886" y2="142" stroke="#34d399" stroke-width="1.6"/>
+  <text x="894" y="146" class="mono" font-size="12.5" fill="#64748b">控制 / 动作</text>
+  <line x1="1000" y1="142" x2="1018" y2="142" stroke="#38bdf8" stroke-width="1.6" stroke-dasharray="4 5"/>
+  <text x="1026" y="146" class="mono" font-size="12.5" fill="#64748b">HTTP / SSE</text>
+  <line x1="96" y1="186" x2="1104" y2="186" stroke="rgba(255,255,255,0.10)"/>
+
+  <!-- 01 Renderer -->
+  <text x="96" y="228" class="layer-num">01</text>
+  <text x="126" y="228" class="layer-title">渲染层</text>
+  <text x="1104" y="224" text-anchor="end" class="layer-en">RENDERER</text>
+  <rect x="96" y="248" width="1008" height="170" rx="20" fill="#12151b" stroke="rgba(255,255,255,0.10)"/>
+  <g transform="translate(136,287)" fill="none" stroke="#94a3b8" stroke-width="1.6" stroke-linecap="round">
+    <rect x="1" y="2" width="22" height="19" rx="3"/>
+    <path d="M1 8h22"/>
+    <circle cx="5.2" cy="5" r="0.7" fill="#94a3b8" stroke="none"/>
+    <circle cx="8" cy="5" r="0.7" fill="#94a3b8" stroke="none"/>
+  </g>
+  <text x="178" y="300" class="card-title">React 19 + Vite 8</text>
+  <text x="178" y="328" class="card-sub">单页应用 · Tailwind @theme 令牌 · 明暗双主题</text>
+  <g>
+    <rect x="136" y="354" width="86" height="36" rx="10" fill="#181d25" stroke="rgba(255,255,255,0.10)"/>
+    <text x="179" y="377" text-anchor="middle" class="chip-text">技能库</text>
+    <rect x="234" y="354" width="88" height="36" rx="10" fill="#181d25" stroke="rgba(255,255,255,0.10)"/>
+    <text x="278" y="377" text-anchor="middle" class="chip-text">Harness</text>
+    <rect x="334" y="354" width="64" height="36" rx="10" fill="#181d25" stroke="rgba(255,255,255,0.10)"/>
+    <text x="366" y="377" text-anchor="middle" class="chip-text">项目</text>
+    <rect x="410" y="354" width="114" height="36" rx="10" fill="#181d25" stroke="rgba(255,255,255,0.10)"/>
+    <text x="467" y="377" text-anchor="middle" class="chip-text">设置 · 状态</text>
+    <rect x="536" y="354" width="90" height="36" rx="10" fill="#181d25" stroke="rgba(255,255,255,0.10)"/>
+    <text x="581" y="377" text-anchor="middle" class="chip-text">操作日志</text>
+  </g>
+  <rect x="800" y="276" width="272" height="122" rx="12" fill="#0e1116" stroke="rgba(52,211,153,0.22)"/>
+  <text x="824" y="302" class="small">唯一数据来源</text>
+  <text x="824" y="330" class="mono-jade">engine.snapshot()</text>
+  <text x="824" y="356" class="mono-md">engine.onChange</text>
+  <text x="824" y="382" class="tiny">事件驱动 · 不做乐观写</text>
+
+  <!-- 02 Bridge -->
+  <text x="96" y="466" class="layer-num">02</text>
+  <text x="126" y="466" class="layer-title">桥接层</text>
+  <text x="1104" y="462" text-anchor="end" class="layer-en">BRIDGE</text>
+  <rect x="96" y="486" width="488" height="196" rx="18" fill="#12151b" stroke="rgba(255,255,255,0.10)"/>
+  <g transform="translate(136,524)" fill="none" stroke="#94a3b8" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+    <rect x="4" y="4" width="16" height="16" rx="3"/>
+    <rect x="8.5" y="8.5" width="7" height="7" rx="1.5"/>
+    <path d="M9 1v3M15 1v3M9 20v3M15 20v3M1 9h3M1 15h3M20 9h3M20 15h3"/>
+  </g>
+  <text x="178" y="538" class="card-title">Electron 主进程</text>
+  <text x="178" y="566" class="card-sub">窗口 · 托盘 · 关闭策略</text>
+  <line x1="136" y1="588" x2="544" y2="588" stroke="rgba(255,255,255,0.08)"/>
+  <circle cx="140" cy="612" r="3" fill="#34d399"/>
+  <text x="154" y="617" class="body">IPC 白名单 · preload 类型桥</text>
+  <circle cx="140" cy="640" r="3" fill="#34d399"/>
+  <text x="154" y="645" class="body">原生对话框 · 编辑器 · 终端</text>
+
+  <rect x="616" y="486" width="488" height="196" rx="18" fill="#12151b" stroke="rgba(255,255,255,0.10)"/>
+  <g transform="translate(656,524)" fill="none" stroke="#94a3b8" stroke-width="1.6" stroke-linecap="round">
+    <circle cx="12" cy="12" r="9.5"/>
+    <path d="M2.5 12h19M12 2.5c3.2 3.2 3.2 15.8 0 19M12 2.5c-3.2 3.2-3.2 15.8 0 19"/>
+  </g>
+  <text x="698" y="538" class="card-title">本地 HTTP 服务</text>
+  <text x="698" y="566" class="card-sub">127.0.0.1 默认 · 局域网显式开启</text>
+  <line x1="656" y1="588" x2="1064" y2="588" stroke="rgba(255,255,255,0.08)"/>
+  <circle cx="660" cy="612" r="3" fill="#38bdf8"/>
+  <text x="674" y="617" class="body">X-Quiver-Token · timingSafeEqual</text>
+  <circle cx="660" cy="640" r="3" fill="#38bdf8"/>
+  <text x="674" y="645" class="body">SSE 快照推送 · 静态页托管</text>
+
+  <path d="M340 426V478" fill="none" stroke="#34d399" stroke-width="1.6" marker-end="url(#arrowJade)"/>
+  <text x="354" y="458" class="conn" fill="#6ee7b7">window.quiver · IPC</text>
+  <path d="M860 426V478" fill="none" stroke="#38bdf8" stroke-width="1.6" stroke-dasharray="5 6" marker-end="url(#arrowSky)"/>
+  <text x="874" y="458" class="conn" fill="#7dd3fc">fetch + SSE · HTTP</text>
+
+  <!-- 03 Engine -->
+  <text x="96" y="726" class="layer-num">03</text>
+  <text x="126" y="726" class="layer-title">引擎层</text>
+  <text x="1104" y="722" text-anchor="end" class="layer-en">ENGINE</text>
+  <rect x="96" y="746" width="1008" height="204" rx="20" fill="#0f1715" stroke="rgba(52,211,153,0.55)" stroke-width="1.5" filter="url(#engineGlow)"/>
+  <g transform="translate(136,782)" fill="none" stroke="#34d399" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M12 1.5 21.5 7v10L12 22.5 2.5 17V7z"/>
+    <path d="M2.7 7 12 12.5 21.3 7M12 22.5V12.5"/>
+  </g>
+  <text x="178" y="796" class="card-title">Engine · 单一事实来源</text>
+  <text x="178" y="824" class="card-sub">electron/engine/index.cjs · 快照 / 动作 / 对账 / 审计</text>
+  <g>
+    <rect x="136" y="852" width="126" height="34" rx="9" fill="#16201d" stroke="rgba(52,211,153,0.20)"/>
+    <text x="199" y="874" text-anchor="middle" class="mono-sm">node:sqlite</text>
+    <rect x="274" y="852" width="116" height="34" rx="9" fill="#16201d" stroke="rgba(52,211,153,0.20)"/>
+    <text x="332" y="874" text-anchor="middle" class="mono-sm">Reconciler</text>
+    <rect x="402" y="852" width="98" height="34" rx="9" fill="#16201d" stroke="rgba(52,211,153,0.20)"/>
+    <text x="451" y="874" text-anchor="middle" class="mono-sm">chokidar</text>
+    <rect x="512" y="852" width="94" height="34" rx="9" fill="#16201d" stroke="rgba(52,211,153,0.20)"/>
+    <text x="559" y="874" text-anchor="middle" class="mono-sm">30s 巡检</text>
+    <rect x="618" y="852" width="128" height="34" rx="9" fill="#16201d" stroke="rgba(52,211,153,0.20)"/>
+    <text x="682" y="874" text-anchor="middle" class="mono-sm">config.toml</text>
+  </g>
+  <rect x="800" y="774" width="272" height="150" rx="12" fill="#0c1311" stroke="rgba(52,211,153,0.18)"/>
+  <text x="824" y="800" class="small">漂移三裁决</text>
+  <text x="824" y="828" font-size="15" fill="#e2e8f0">重置 / 收编 / 忽略</text>
+  <line x1="824" y1="848" x2="1048" y2="848" stroke="rgba(52,211,153,0.16)"/>
+  <text x="824" y="872" class="small">共享层禁用</text>
+  <text x="824" y="898" font-size="14.5" fill="#cbd5e1">智能拆分 / 彻底移除</text>
+  <circle cx="140" cy="917" r="3" fill="#34d399"/>
+  <text x="154" y="922" font-size="13" fill="#94a3b8">写入动作统一由引擎执行，并记录中文审计日志</text>
+
+  <path d="M340 690V730" fill="none" stroke="#34d399" stroke-width="1.6" marker-end="url(#arrowJade)"/>
+  <text x="354" y="716" class="conn" fill="#6ee7b7">动作 + 快照</text>
+  <path d="M860 690V730" fill="none" stroke="#38bdf8" stroke-width="1.6" stroke-dasharray="5 6" marker-end="url(#arrowSky)"/>
+  <text x="874" y="716" class="conn" fill="#7dd3fc">RPC</text>
+
+  <!-- 04 Storage -->
+  <text x="96" y="994" class="layer-num">04</text>
+  <text x="126" y="994" class="layer-title">落盘层</text>
+  <text x="1104" y="990" text-anchor="end" class="layer-en">STORAGE</text>
+  <path d="M256 958V1006" fill="none" stroke="#64748b" stroke-width="1.5" marker-end="url(#arrowSlate)"/>
+  <text x="270" y="988" class="mono" font-size="13" fill="#64748b">读取</text>
+  <path d="M600 958V1006" fill="none" stroke="#64748b" stroke-width="1.5" marker-end="url(#arrowSlate)"/>
+  <text x="614" y="988" class="mono" font-size="13" fill="#64748b">索引</text>
+  <path d="M944 958V1006" fill="none" stroke="#64748b" stroke-width="1.5" marker-end="url(#arrowSlate)"/>
+  <text x="958" y="988" class="mono" font-size="13" fill="#64748b">挂载</text>
+
+  <rect x="96" y="1014" width="320" height="176" rx="18" fill="#12151b" stroke="rgba(255,255,255,0.10)"/>
+  <g transform="translate(128,1042)" fill="none" stroke="#34d399" stroke-width="1.6" stroke-linecap="round">
+    <rect x="4" y="10" width="16" height="12" rx="3"/>
+    <path d="M8 10V7a4 4 0 0 1 8 0v3"/>
+  </g>
+  <text x="160" y="1062" class="mono" font-size="17" fill="#f8fafc">store/sha256</text>
+  <text x="128" y="1094" class="card-sub">内容寻址只读库</text>
+  <rect x="128" y="1112" width="60" height="26" rx="7" fill="#16201d" stroke="rgba(52,211,153,0.20)"/>
+  <text x="158" y="1129" text-anchor="middle" class="mono" font-size="12.5" fill="#34d399">0555</text>
+  <rect x="196" y="1112" width="60" height="26" rx="7" fill="#16201d" stroke="rgba(52,211,153,0.20)"/>
+  <text x="226" y="1129" text-anchor="middle" class="mono" font-size="12.5" fill="#34d399">0444</text>
+  <text x="128" y="1172" class="tiny">SHA-256 校验 · 权限固化</text>
+
+  <rect x="440" y="1014" width="320" height="176" rx="18" fill="#12151b" stroke="rgba(255,255,255,0.10)"/>
+  <g transform="translate(472,1042)" fill="none" stroke="#94a3b8" stroke-width="1.6" stroke-linecap="round">
+    <path d="M9.5 14.5 14.5 9.5"/>
+    <path d="M11 7l2-2a4.2 4.2 0 0 1 6 6l-2 2"/>
+    <path d="M13 17l-2 2a4.2 4.2 0 0 1-6-6l2-2"/>
+  </g>
+  <text x="504" y="1062" class="mono" font-size="17" fill="#f8fafc">available/</text>
+  <text x="472" y="1094" class="card-sub">版本别名链接</text>
+  <text x="472" y="1126" class="tiny">按版本索引 Store 入口</text>
+  <text x="472" y="1150" class="tiny">不复制源文件</text>
+  <text x="472" y="1172" class="tiny">link 绑定随锚点切换</text>
+
+  <rect x="784" y="1014" width="320" height="176" rx="18" fill="#12151b" stroke="rgba(255,255,255,0.10)"/>
+  <g transform="translate(816,1042)" fill="none" stroke="#94a3b8" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M3 7a2 2 0 0 1 2-2h5l2 2h7a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+  </g>
+  <text x="848" y="1062" font-size="17" font-weight="600" fill="#f8fafc">Harness 目录</text>
+  <text x="816" y="1094" class="mono" font-size="14.5" fill="#94a3b8">junction / symlink</text>
+  <text x="816" y="1126" class="tiny">无权限时降级为独立副本</text>
+  <text x="816" y="1150" class="tiny">只写各工具扫描目录</text>
+  <text x="816" y="1172" class="tiny">不触碰工具自身配置</text>
+
+  <line x1="96" y1="1232" x2="1104" y2="1232" stroke="rgba(255,255,255,0.10)"/>
+  <text x="96" y="1262" class="mono" font-size="13" fill="#64748b">单一事实来源 · 渲染层不做乐观写 · 不触碰 Harness 配置</text>
+  <text x="1104" y="1262" text-anchor="end" class="mono" font-size="12.5" fill="#64748b">Windows x64 · Electron 41 · 25 harnesses / 126 candidate paths</text>
+</svg>
