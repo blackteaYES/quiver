@@ -6,6 +6,8 @@ dist/
 dist-electron/
 release/
 release-*/
+!.github/release-notes/
+!.github/release-notes/**
 *.tsbuildinfo
 .vite/
 
